@@ -76,7 +76,7 @@ export default function HomePage() {
 
         <div className="flex flex-col items-center">
           {/* Title - characters appear one by one with ink effect */}
-          <div className="vertical-text mb-8">
+          <div className="mb-8">
             <h1 className="text-ink text-3xl sm:text-4xl tracking-[0.4em] leading-loose font-bold flex flex-col items-center">
               {titleChars.map((char, i) => (
                 <motion.span
