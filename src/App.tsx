@@ -28,7 +28,7 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/zhai-ju-xiao-ji">
       <AnimatedRoutes />
     </BrowserRouter>
   );
