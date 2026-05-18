@@ -52,7 +52,7 @@ const mockReport = {
 
 export default function LoadingPage() {
   const navigate = useNavigate();
-  const { setReport, bazi, doorDirection } = useAppStore();
+  const { setReport, bazi } = useAppStore();
   const [phase, setPhase] = useState(0);
   const [textVisible, setTextVisible] = useState(false);
 

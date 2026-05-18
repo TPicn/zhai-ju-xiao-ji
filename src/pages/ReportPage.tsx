@@ -13,7 +13,7 @@ const illustrationTypes = ['plant', 'curtain', 'mirror', 'light', 'general'] as 
 export default function ReportPage() {
   const navigate = useNavigate();
   const reportRef = useRef<HTMLDivElement>(null);
-  const { report, bazi, doorDirection, reset } = useAppStore();
+  const { report, doorDirection, reset } = useAppStore();
 
   if (!report) {
     return (

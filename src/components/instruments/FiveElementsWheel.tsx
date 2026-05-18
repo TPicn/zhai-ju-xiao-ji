@@ -36,7 +36,7 @@ export default function FiveElementsWheel({ size = 180, className = '' }: FiveEl
         transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
       >
         {/* Element wedges */}
-        {elements.map((el, i) => {
+        {elements.map((el) => {
           const startAngle = (el.angle - 90) * (Math.PI / 180);
           const endAngle = (el.angle + 72 - 90) * (Math.PI / 180);
           const x1 = half + r * Math.cos(startAngle);
@@ -64,7 +64,7 @@ export default function FiveElementsWheel({ size = 180, className = '' }: FiveEl
         })}
 
         {/* Element labels */}
-        {elements.map((el, i) => {
+        {elements.map((el) => {
           const midAngle = (el.angle + 36 - 90) * (Math.PI / 180);
           const labelR = r * 0.62;
           const lx = half + labelR * Math.cos(midAngle);

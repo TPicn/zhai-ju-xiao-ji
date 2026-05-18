@@ -13,12 +13,10 @@ export default function CompassWheel({ onSelect, selected }: CompassWheelProps) 
   const constraintsRef = useRef<HTMLDivElement>(null);
   const rotation = useMotionValue(0);
   const [snapAngle, setSnapAngle] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
 
   const displayRotation = useTransform(rotation, (r) => r + snapAngle);
 
   const handleDragEnd = () => {
-    setIsDragging(false);
     const currentAngle = rotation.get() + snapAngle;
     // Normalize to 0-360
     let normalized = ((currentAngle % 360) + 360) % 360;
@@ -64,7 +62,6 @@ export default function CompassWheel({ onSelect, selected }: CompassWheelProps) 
         }}
         drag
         dragConstraints={constraintsRef}
-        onDragStart={() => setIsDragging(true)}
         onDragEnd={handleDragEnd}
         whileTap={{ cursor: 'grabbing' }}
       >

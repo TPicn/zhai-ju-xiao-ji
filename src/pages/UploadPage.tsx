@@ -6,7 +6,7 @@ import InkButton from '../components/ui/InkButton';
 import BottomNav from '../components/ui/BottomNav';
 import CompassWheel from '../components/compass/CompassWheel';
 import FengShuiRuler from '../components/instruments/FengShuiRuler';
-import { useAppStore, type Room, type BaziData } from '../store/useAppStore';
+import { useAppStore, type BaziData } from '../store/useAppStore';
 import type { Direction } from '../config/theme';
 
 type Step = 'upload' | 'annotate' | 'bazi';

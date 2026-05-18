@@ -157,6 +157,7 @@ function generateResponse(query: string): string {
 }
 
 export default function BaziPage() {
+  const navigate = useNavigate();
   const [step, setStep] = useState<'input' | 'chat'>('input');
   const [birthYear, setBirthYear] = useState('');
   const [birthMonth, setBirthMonth] = useState('');
