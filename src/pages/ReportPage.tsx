@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
@@ -14,6 +14,12 @@ export default function ReportPage() {
   const navigate = useNavigate();
   const reportRef = useRef<HTMLDivElement>(null);
   const { report, doorDirection, reset } = useAppStore();
+  const [showStamp, setShowStamp] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowStamp(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!report) {
     return (
@@ -121,6 +127,34 @@ export default function ReportPage() {
               <span className="text-cinnabar text-sm font-bold">{doorDirection}</span>
             </div>
           )}
+
+          {/* "安宅" completion stamp — drops in, holds briefly, then fades */}
+          {showStamp && (
+            <motion.div
+              className="flex justify-center mb-4"
+              initial={{ opacity: 0, y: -60, scale: 1.8, rotate: -15 }}
+              animate={{ opacity: 1, y: 0, scale: 1, rotate: -5 }}
+              exit={{ opacity: 0 }}
+              transition={{
+                y: { duration: 0.5, ease: [0.4, 0.0, 0.2, 1.0] },
+                scale: { duration: 0.5, ease: [0.4, 0.0, 0.2, 1.0] },
+                rotate: { duration: 0.5, ease: [0.4, 0.0, 0.2, 1.0] },
+                opacity: { duration: 0.3 },
+              }}
+            >
+              <div
+                className="w-16 h-16 border-[3px] border-cinnabar flex items-center justify-center"
+                style={{
+                  rotate: '-6deg',
+                  fontFamily: "'ZCOOL KuaiLe', 'Ma Shan Zheng', 'STXingkai', cursive",
+                  textShadow: '0 1px 0 #8B1E1A, 0 -1px 0 #E87572',
+                  boxShadow: '0 2px 6px rgba(139,30,26,0.25)',
+                }}
+              >
+                <span className="text-cinnabar text-xl font-bold">安宅</span>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Section 1: Overall impression */}
@@ -189,7 +223,8 @@ export default function ReportPage() {
           {report.rooms.map((room, i) => (
             <motion.div
               key={room.name}
-              className="mb-8 bg-silk rounded-lg p-5 border border-ink-pale/20"
+              className="mb-8 bg-silk p-5"
+              style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 + i * 0.15 }}
@@ -223,7 +258,7 @@ export default function ReportPage() {
           >
             可操作的小调整
           </h3>
-          <div className="bg-silk rounded-lg p-5 border border-ink-pale/20">
+          <div className="bg-silk p-5" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
             {report.tips.map((tip, i) => (
               <motion.div
                 key={i}
@@ -256,7 +291,7 @@ export default function ReportPage() {
               >
                 写在最后
               </h3>
-              <div className="bg-silk rounded-lg p-5 border border-ink-pale/20">
+              <div className="bg-silk p-5" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
                 <p className="text-ink-heavy text-sm leading-loose">{report.conclusion}</p>
               </div>
             </motion.div>

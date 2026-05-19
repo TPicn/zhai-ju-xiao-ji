@@ -219,12 +219,12 @@ export default function UploadPage() {
               </div>
 
               {/* Compass */}
-              <div className="bg-silk rounded-lg p-6 border border-ink-pale/20">
+              <div className="bg-silk p-6" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
                 <CompassWheel onSelect={handleDirectionSelect} selected={doorDirection} />
               </div>
 
               {/* Room labels */}
-              <div className="bg-silk rounded-lg p-4 border border-ink-pale/20">
+              <div className="bg-silk p-4" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
                 <p className="text-ink-light text-sm mb-3 text-center">确认各房间用途</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {rooms.map((room) => (
@@ -234,7 +234,7 @@ export default function UploadPage() {
                         type="text"
                         value={room.label}
                         onChange={(e) => handleRoomLabelChange(room.id, e.target.value)}
-                        className="flex-1 bg-parchment border border-ink-pale/30 rounded px-2 py-1 text-sm text-ink-heavy focus:outline-none focus:border-ink-pale/60"
+                        className="flex-1 bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-1 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all" style={{ borderRadius: 0 }}
                       />
                     </div>
                   ))}
@@ -262,7 +262,7 @@ export default function UploadPage() {
               exit={{ opacity: 0, y: -8 }}
               className="flex flex-col gap-6"
             >
-              <div className="bg-silk rounded-lg p-6 border border-ink-pale/20">
+              <div className="bg-silk p-6" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
                 <p
                   className="text-ink text-lg text-center mb-6"
                   style={{
@@ -284,7 +284,7 @@ export default function UploadPage() {
                       onChange={(e) =>
                         setBaziForm({ ...baziForm, year: parseInt(e.target.value) || 1990 })
                       }
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2 text-sm text-ink-heavy focus:outline-none focus:border-ink-pale/60"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all" style={{ borderRadius: 0 }}
                       placeholder="1990"
                     />
                   </div>
@@ -298,7 +298,7 @@ export default function UploadPage() {
                       }
                       min={1}
                       max={12}
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2 text-sm text-ink-heavy focus:outline-none focus:border-ink-pale/60"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all" style={{ borderRadius: 0 }}
                       placeholder="1"
                     />
                   </div>
@@ -312,7 +312,7 @@ export default function UploadPage() {
                       }
                       min={1}
                       max={31}
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2 text-sm text-ink-heavy focus:outline-none focus:border-ink-pale/60"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all" style={{ borderRadius: 0 }}
                       placeholder="1"
                     />
                   </div>
@@ -326,7 +326,7 @@ export default function UploadPage() {
                       }
                       min={0}
                       max={23}
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2 text-sm text-ink-heavy focus:outline-none focus:border-ink-pale/60"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all" style={{ borderRadius: 0 }}
                       placeholder="12"
                     />
                   </div>

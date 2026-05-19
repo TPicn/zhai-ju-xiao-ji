@@ -1,25 +1,34 @@
 export const colors = {
-  parchment: '#F7F3ED',
-  silk: '#F2EFE9',
-  ink: '#2C2C2C',
-  inkHeavy: '#4A4A4A',
-  inkLight: '#8C8C8C',
+  parchment: '#F9F6F0',
+  silk: '#F5F1EA',
+  ink: '#1E1E1E',
+  inkHeavy: '#5E554B',
+  inkLight: '#6B635B',
   inkPale: '#BFB8AF',
-  cinnabar: '#C43A31',
+  cinnabar: '#C73E3A',
+  cinnabarDeep: '#8B1E1A',
+  cinnabarLight: '#E87572',
   indigo: '#4A6B8A',
+  paperEdge: '#E0D8CC',
+  divider: '#D9D1C5',
+  dividerHeavy: '#B0A698',
 } as const;
 
 export const pageTransition = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
-  transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] as const },
+  initial: { opacity: 1, x: 30 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -10, scale: 0.98 },
+  transition: {
+    x: { duration: 0.25, ease: [0.2, 0.0, 0.0, 1.0] as const },
+    opacity: { duration: 0.15, ease: [0.2, 0.0, 0.0, 1.0] as const },
+    scale: { duration: 0.15, ease: [0.2, 0.0, 0.0, 1.0] as const },
+  },
 };
 
 export const elementReveal = {
   initial: { opacity: 0, y: 4 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.18, ease: 'easeOut' },
+  transition: { duration: 0.25, ease: [0.2, 0.0, 0.0, 1.0] as const },
 };
 
 export const staggerContainer = {

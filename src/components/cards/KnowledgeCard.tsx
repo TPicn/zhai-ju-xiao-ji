@@ -49,7 +49,13 @@ export default function KnowledgeCard({
   return (
     <motion.div
       ref={cardRef}
-      className="w-[260px] h-[340px] sm:w-72 sm:h-96 flex-shrink-0 cursor-pointer bg-silk rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center gap-3 sm:gap-4 border border-ink-pale/20 select-none relative overflow-hidden touch-manipulation"
+      className="w-[260px] h-[340px] sm:w-72 sm:h-96 flex-shrink-0 cursor-pointer bg-silk p-4 sm:p-6 flex flex-col items-center justify-center gap-3 sm:gap-4 select-none relative overflow-hidden touch-manipulation"
+      style={{
+        transformStyle: 'preserve-3d',
+        perspective: 800,
+        boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)',
+        borderRadius: '4px',
+      }}
       onDoubleClick={onDoubleClick}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
@@ -62,13 +68,13 @@ export default function KnowledgeCard({
           : '0 2px 8px rgba(44,44,44,0.04)',
       }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      style={{ transformStyle: 'preserve-3d', perspective: 800 }}
     >
       {/* Glare/light effect on hover */}
       {isHovering && (
         <div
-          className="absolute inset-0 pointer-events-none rounded-lg"
+          className="absolute inset-0 pointer-events-none"
           style={{
+            borderRadius: '4px',
             background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.15) 0%, transparent 50%)`,
           }}
         />
