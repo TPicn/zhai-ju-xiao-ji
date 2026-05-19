@@ -13,10 +13,12 @@ const sizeMap = {
 export default function SealStamp({ text, size = 'md', className = '' }: SealStampProps) {
   return (
     <div
-      className={`${sizeMap[size]} border-2 border-cinnabar text-cinnabar rounded-full flex items-center justify-center font-bold select-none opacity-80 ${className}`}
+      className={`${sizeMap[size]} border-2 border-cinnabar text-cinnabar rounded-full flex items-center justify-center font-bold select-none ${className}`}
       style={{
         rotate: '-8deg',
         fontFamily: "'ZCOOL KuaiLe', 'Ma Shan Zheng', 'STXingkai', cursive",
+        textShadow: '0 1px 0 #8B1E1A, 0 -1px 0 #E87572',
+        boxShadow: '0 1px 3px rgba(139,30,26,0.15)',
       }}
     >
       {text}

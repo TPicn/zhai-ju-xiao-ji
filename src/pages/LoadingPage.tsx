@@ -54,31 +54,31 @@ export default function LoadingPage() {
   const navigate = useNavigate();
   const { setReport, bazi } = useAppStore();
   const [phase, setPhase] = useState(0);
-  const [textVisible, setTextVisible] = useState(false);
 
   useEffect(() => {
-    // Phase 0: drop falls
-    const t1 = setTimeout(() => setPhase(1), 800);
-    // Phase 1: spread
-    const t2 = setTimeout(() => {
-      setPhase(2);
-      setTextVisible(true);
-    }, 1800);
-    // Navigate to report
+    // Phase 0: ink drop falls (0-900ms)
+    const t1 = setTimeout(() => setPhase(1), 300);
+    // Phase 1: drop splashes
+    const t2 = setTimeout(() => setPhase(2), 700);
+    // Phase 2: horizontal spread
     const t3 = setTimeout(() => {
-      // Customize report based on input
+      setPhase(3);
+    }, 1100);
+    // Navigate to report
+    const t4 = setTimeout(() => {
       const customizedReport = {
         ...mockReport,
         baziMatch: bazi ? mockReport.baziMatch : undefined,
       };
       setReport(customizedReport);
       navigate('/report');
-    }, 4500);
+    }, 4200);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
+      clearTimeout(t4);
     };
   }, [navigate, setReport, bazi]);
 
@@ -88,132 +88,128 @@ export default function LoadingPage() {
     <div className="min-h-dvh bg-parchment flex flex-col items-center justify-center relative overflow-hidden">
       {/* Ink drop animation area */}
       <div className="relative w-40 h-40 flex items-center justify-center">
-        {/* Ripple rings - multiple waves */}
-        {[0, 1, 2, 3].map((i) => (
-          <motion.div
-            key={i}
-            className="absolute inset-0 rounded-full"
-            style={{
-              border: '1px solid rgba(44,44,44,0.12)',
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: phase >= 1 ? [0, 2.0 + i * 0.5] : [0, 0.5],
-              opacity: phase >= 1 ? [0.5, 0] : [0.3, 0],
-            }}
-            transition={{
-              duration: 2.5,
-              delay: i * 0.7 + 0.3,
-              repeat: Infinity,
-              repeatDelay: 0,
-            }}
-          />
-        ))}
+        {/* Water surface line */}
+        <div className="absolute top-[55%] left-0 w-full h-px opacity-0" />
 
-        {/* Central ink drop */}
+        {/* ① The falling drop: irregular ellipse descending */}
         <motion.div
-          className="w-2.5 h-2.5 bg-ink rounded-full absolute"
+          className="absolute w-3 h-5 bg-ink/70"
+          style={{
+            borderRadius: '45% 55% 50% 50%',
+            top: '20%',
+          }}
           animate={
-            phase === 0
-              ? { y: [0, 20], opacity: 1 }
-              : phase === 1
-              ? { scale: [1, 1.8, 3], opacity: [1, 0.6, 0.2] }
-              : { scale: 2, opacity: 0.15 }
+            phase < 2
+              ? { y: [0, 65], opacity: [0.9, 0.7] }
+              : { y: 65, opacity: 0 }
           }
           transition={
-            phase === 0
-              ? { duration: 0.6, ease: 'easeIn' }
-              : { duration: 0.8, ease: 'easeOut' }
+            phase < 2
+              ? { duration: 0.7, ease: [0.4, 0.0, 0.6, 1.0] }
+              : { duration: 0.2 }
           }
         />
 
-        {/* Ink spread blob */}
+        {/* ② Splash dots (two tiny droplets flying up on impact) */}
         {phase >= 1 && (
+          <>
+            <motion.div
+              className="absolute w-1.5 h-1.5 rounded-full bg-ink/50"
+              style={{ top: '55%', left: '42%' }}
+              initial={{ y: 0, x: 0, opacity: 0.8 }}
+              animate={{ y: -24, x: -8, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.2, 0.0, 0.0, 1.0] }}
+            />
+            <motion.div
+              className="absolute w-1 h-1 rounded-full bg-ink/40"
+              style={{ top: '55%', left: '53%' }}
+              initial={{ y: 0, x: 0, opacity: 0.7 }}
+              animate={{ y: -18, x: 6, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.2, 0.0, 0.0, 1.0] }}
+            />
+          </>
+        )}
+
+        {/* ③ Horizontal spread: ink spreads into a wide flat ellipse */}
+        {phase >= 2 && (
           <motion.div
-            className="absolute w-32 h-32 rounded-full"
+            className="absolute"
             style={{
+              top: '53%',
+              width: '40px',
+              height: '4px',
               background:
-                'radial-gradient(circle at 50% 50%, rgba(44,44,44,0.2) 0%, rgba(44,44,44,0.06) 40%, transparent 70%)',
+                'radial-gradient(ellipse at center, rgba(94,85,75,0.3) 0%, transparent 70%)',
+              borderRadius: '50%',
             }}
-            initial={{ scale: 0 }}
-            animate={{
-              scale: [0.2, 1.6, 1.3, 1.5, 1.4],
-              rotate: [0, 90, 180, 270, 360],
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            initial={{ scaleX: 0.3, scaleY: 1.5, opacity: 0.5 }}
+            animate={{ scaleX: 3, scaleY: 0.5, opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1.0] }}
           />
         )}
 
-        {/* Emerging floor plan contour */}
-        {phase >= 2 && (
-          <motion.svg
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 100 100"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.3 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.rect
-              x="15"
-              y="10"
-              width="70"
-              height="80"
-              rx="2"
-              fill="none"
-              stroke="#2C2C2C"
-              strokeWidth="0.8"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, ease: 'easeInOut' }}
-            />
-            <motion.line
-              x1="15"
-              y1="45"
-              x2="85"
-              y2="45"
-              stroke="#2C2C2C"
-              strokeWidth="0.5"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 1.5, delay: 0.3 }}
-            />
-            <motion.line
-              x1="50"
-              y1="45"
-              x2="50"
-              y2="90"
-              stroke="#2C2C2C"
-              strokeWidth="0.5"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 1.5, delay: 0.5 }}
-            />
-          </motion.svg>
-        )}
+        {/* Text revealing character by character */}
+        <div className="absolute mt-40 flex">
+          {phase >= 1 &&
+            chars.map((char, i) => (
+              <motion.span
+                key={i}
+                className="text-ink-light text-base mx-[2px]"
+                initial={{ opacity: 0, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                transition={{ delay: 0.3 + i * 0.15, duration: 0.6 }}
+              >
+                {char}
+              </motion.span>
+            ))}
+        </div>
       </div>
 
-      {/* Text revealing character by character */}
-      <div className="mt-20 flex">
-        {textVisible &&
-          chars.map((char, i) => (
-            <motion.span
-              key={i}
-              className="text-ink-light text-base mx-[2px]"
-              initial={{ opacity: 0, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ delay: i * 0.15, duration: 0.6 }}
-            >
-              {char}
-            </motion.span>
-          ))}
-      </div>
+      {/* Floor plan contour emerging after ink spread */}
+      {phase >= 3 && (
+        <motion.svg
+          className="absolute top-[20%] w-40 h-40"
+          viewBox="0 0 100 100"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.25 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.rect
+            x="15"
+            y="10"
+            width="70"
+            height="80"
+            rx="2"
+            fill="none"
+            stroke="#5E554B"
+            strokeWidth="0.8"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 2, ease: [0.2, 0.0, 0.0, 1.0] }}
+          />
+          <motion.line
+            x1="15" y1="45" x2="85" y2="45"
+            stroke="#5E554B" strokeWidth="0.5"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1.5, delay: 0.3 }}
+          />
+          <motion.line
+            x1="50" y1="45" x2="50" y2="90"
+            stroke="#5E554B" strokeWidth="0.5"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          />
+        </motion.svg>
+      )}
 
       {/* Ambient floating particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {Array.from({ length: 8 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-ink-pale/15 rounded-full"
+            className="absolute w-1 h-1 bg-[#BFB8AF]/15 rounded-full"
             style={{
               left: `${10 + Math.random() * 80}%`,
               top: `${10 + Math.random() * 80}%`,

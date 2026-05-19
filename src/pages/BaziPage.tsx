@@ -272,7 +272,7 @@ export default function BaziPage() {
               exit={{ opacity: 0, y: -8 }}
               className="flex flex-col gap-6"
             >
-              <div className="bg-silk rounded-lg p-6 border border-ink-pale/20">
+              <div className="bg-silk p-6" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
                 <p
                   className="text-ink text-xl text-center mb-2"
                   style={{
@@ -292,7 +292,7 @@ export default function BaziPage() {
                       type="text"
                       value={birthYear}
                       onChange={(e) => setBirthYear(e.target.value)}
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-cinnabar/50 transition-colors"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
                       placeholder="如 1990"
                     />
                   </div>
@@ -302,7 +302,7 @@ export default function BaziPage() {
                       type="text"
                       value={birthMonth}
                       onChange={(e) => setBirthMonth(e.target.value)}
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-cinnabar/50 transition-colors"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
                       placeholder="农历或公历月"
                     />
                   </div>
@@ -312,7 +312,7 @@ export default function BaziPage() {
                       type="text"
                       value={birthDay}
                       onChange={(e) => setBirthDay(e.target.value)}
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-cinnabar/50 transition-colors"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
                       placeholder="如 15"
                     />
                   </div>
@@ -322,7 +322,7 @@ export default function BaziPage() {
                       type="text"
                       value={birthHour}
                       onChange={(e) => setBirthHour(e.target.value)}
-                      className="w-full bg-parchment border border-ink-pale/30 rounded px-3 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-cinnabar/50 transition-colors"
+                      className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
                       placeholder="如 子时(23-1点)"
                     />
                   </div>
@@ -380,7 +380,7 @@ export default function BaziPage() {
               className="flex flex-col flex-1"
             >
               {/* Bazi info banner */}
-              <div className="bg-silk rounded-lg px-4 py-3 border border-ink-pale/20 mb-4 text-center relative">
+              <div className="bg-silk px-4 py-3 mb-4 text-center relative" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
                 <div className="absolute -top-3 right-3 opacity-30">
                   <IChingCoins size={48} />
                 </div>
@@ -488,7 +488,7 @@ export default function BaziPage() {
                     }
                   }}
                   placeholder="输入您想了解的问题…"
-                  className="flex-1 bg-silk border border-ink-pale/30 rounded-full px-5 py-3 text-sm text-ink-heavy focus:outline-none focus:border-cinnabar/50 transition-colors"
+                  className="flex-1 bg-silk px-5 py-3 text-sm text-ink-heavy focus:outline-none placeholder:text-ink-pale" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}
                 />
                 <button
                   onClick={handleSendMessage}
