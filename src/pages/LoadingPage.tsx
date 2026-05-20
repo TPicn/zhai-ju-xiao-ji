@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore, type ReportData } from '../store/useAppStore';
+import { trackUsage } from '../utils/usageTracker';
 
 const DEEPSEEK_API_KEY = 'sk-cde7b9b704b448f9bb1007b542d26012';
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
@@ -22,47 +23,26 @@ async function callDeepSeekForReport(
       ? '这是一间宿舍（学生宿舍/员工宿舍/合租单间），不是标准住宅。用户的生活场景是住宿，而非居家。分析应围绕床位摆放、书桌布局、储物收纳、个人空间优化等宿舍特有的风水场景展开。不要提及厨房和客厅，宿舍里没有这些。'
       : '这是一套标准住宅（商品房/公寓/自建房），用户在这里进行完整的居家生活。分析应覆盖客厅、卧室、厨房、卫生间等标准住宅空间。';
 
-  const systemPrompt = `你是一位经验丰富的风水顾问，你的分析风格温暖、注重生活细节、不堆砌术语。你会根据用户提供的真实户型信息给出个性化、可操作的建议。
+  const systemPrompt = `你是风水顾问，根据真实户型给个性化建议。风格温暖，像朋友聊天，少术语。
 
-## 用户提供的户型信息
-- 房屋类型：${houseType === 'dorm' ? '宿舍' : '标准住宅'}
-- 大门朝向：${doorDirection || '未指定'}
-- 空间/房间列表：${roomList}
-- 八字信息：${baziStr}
+户型信息：
+- 类型：${houseType === 'dorm' ? '宿舍' : '标准住宅'}
+- 朝向：${doorDirection || '未指定'}
+- 房间：${roomList}
+- 八字：${baziStr}
 
 ${houseContext}
 
-## 你的任务
-根据上述信息，生成一份完整的居家风水分析报告。你必须**严格根据用户提供的房间列表**来写分析——用户有几个房间就分析几个，房间名使用用户提供的名称。不要分析用户没有提到的房间，也不要使用"客厅""厨房"等用户列表中没有的房间名。
-
-## 输出格式要求
-请严格输出以下 JSON 格式（不要加 markdown 代码块标记，直接输出纯 JSON）：
+任务：严格按用户提供的房间列表生成分析报告。几个房间就分析几个，不要编造不存在房间。输出纯JSON（无markdown标记）：
 
 {
-  "overall": "整体格局分析，200-400字。根据实际朝向和空间布局给出个性化评价，语言温暖有画面感",
-  "rooms": [
-    { "name": "房间名（使用用户提供的名称）", "advice": "针对这个房间的具体风水建议，150-250字，包含可操作的调整方法" }
-  ],
-  "tips": [
-    "具体可操作的小调整1",
-    "具体可操作的小调整2",
-    "具体可操作的小调整3",
-    "具体可操作的小调整4",
-    "具体可操作的小调整5"
-  ],
-  "conclusion": "温暖鼓励的结束语，100-150字，让用户感到这个空间是可以变好的"
+  "overall": "整体评价200-300字",
+  "rooms": [{"name":"房间名","advice":"建议150-200字"}],
+  "tips": ["小调整1","小调整2","小调整3","小调整4","小调整5"],
+  "conclusion": "结束语80-120字"
 }
 
-## 分析原则
-1. 基于实际房间布局和朝向来写，不要套用模板
-2. 每个房间的建议要具体、可操作——用户看完就能动手改
-3. 语言温暖，有画面感，像朋友在聊天而不是大师在说教
-4. 宿舍类型的分析要特别关注：床位朝向与睡眠质量、书桌摆放与学习/工作效率、储物空间的整洁与能量流动
-5. 如果提供了八字，可在 overall 中简要提及五行适配（一两句即可）
-6. 每条 tip 要简洁有力，20-40字
-7. 不要使用任何 markdown 格式标记
-
-重要：只输出 JSON，不要加 \`\`\`json 或其他标记，纯 JSON 文本。`;
+注意：宿舍关注床位朝向/书桌布局/储物收纳；每条tip限30字内；有八字可在overall提一句五行。`;
 
   const response = await fetch(DEEPSEEK_API_URL, {
     method: 'POST',
@@ -77,7 +57,7 @@ ${houseContext}
         { role: 'user', content: '请为我的户型生成风水分析报告。' },
       ],
       temperature: 0.85,
-      max_tokens: 3000,
+      max_tokens: 2000,
     }),
   });
 
@@ -147,6 +127,7 @@ export default function LoadingPage() {
         setTimeout(() => {
           doneRef.current = true;
           setReport(report);
+          trackUsage('fengshui-report');
           navigate('/report');
         }, remaining);
       })

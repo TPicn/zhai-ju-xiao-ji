@@ -6,6 +6,7 @@ import BottomNav from '../components/ui/BottomNav';
 import IChingCoins from '../components/instruments/IChingCoins';
 import FiveElementsWheel from '../components/instruments/FiveElementsWheel';
 import MarkdownContent from '../components/ui/MarkdownContent';
+import { trackUsage } from '../utils/usageTracker';
 
 interface Message {
   id: string;
@@ -23,28 +24,17 @@ async function callDeepSeekAPI(
   chatHistory: { role: string; content: string }[],
   userQuery: string,
 ): Promise<string> {
-  const systemPrompt = `你是一位专业的八字命理顾问，精通传统八字排盘、五行生克、十神配置、大运流年分析。你的回答风格温暖、有深度、充满人文关怀。
+  const systemPrompt = `你是专业八字命理顾问。用户出生信息：${baziInfo}
+（时间可能是口语化表达如"上午9点"，请自行转为时辰；日期可能为农历或公历，请判断说明）
 
-用户提供的出生信息：${baziInfo}
+规则：先排四柱让用户确认→生活化分析（少术语）→末尾用📜列3-5要点→🍃温暖寄语。用中文Markdown回复。`;
 
-注意：用户的出生时间可能是口语化表达（如"上午9点""晚上8点半"）而非传统时辰（如"巳时""戌时"），请自行转换为对应的时辰再排盘。出生日期可能是农历（如"三月初五"）或公历（如"3月15日"），请根据语境判断并在分析中说明你使用的是哪种历法。
-
-分析原则：
-1. 首先明确告知用户你识别到的八字命盘（四柱天干地支），让用户确认基本信息
-2. 基于八字理论框架（日主强弱、五行平衡、十神关系、大运走势、流年变化），但不堆砌术语——用生活化的语言解释
-3. 给出具体、可操作的建议，而非空洞的断言
-4. 保持温暖鼓励的语气，结合具体的命理依据
-5. 回答要有清晰的结构：先给出核心分析，再展开细节
-6. 在回答末尾，用"📜 本次分析要点汇总"作为标题，列出3-5条核心要点
-7. 最后用"🍃 最后想对你说"作为结尾，给用户一段温暖鼓励的话
-
-重要：请只基于用户提供的出生信息进行分析。如果信息不足以做出判断，坦诚说明。
-
-请用中文回复，使用 Markdown 格式。`;
+  // Trim to last 6 messages (3 turns) to prevent unbounded token growth
+  const recentHistory = chatHistory.slice(-6);
 
   const messages = [
     { role: 'system', content: systemPrompt },
-    ...chatHistory,
+    ...recentHistory,
     { role: 'user', content: userQuery },
   ];
 
@@ -58,7 +48,7 @@ async function callDeepSeekAPI(
       model: 'deepseek-chat',
       messages,
       temperature: 0.8,
-      max_tokens: 2000,
+      max_tokens: 1200,
     }),
   });
 
@@ -144,6 +134,7 @@ export default function BaziPage() {
       }));
 
       const response = await callDeepSeekAPI(baziInfo, chatHistory, userMsg.content);
+      trackUsage('bazi-chat');
 
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
