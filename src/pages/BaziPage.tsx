@@ -364,8 +364,8 @@ export default function BaziPage() {
                 <div ref={chatEndRef} />
               </div>
 
-              {/* Input area */}
-              <div className="flex gap-3 mt-auto">
+              {/* Input area — extra bottom margin to clear BottomNav */}
+              <div className="flex gap-3 mt-auto mb-20 sm:mb-16">
                 <input
                   type="text"
                   value={inputValue}
