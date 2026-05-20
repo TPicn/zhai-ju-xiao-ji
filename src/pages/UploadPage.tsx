@@ -6,10 +6,25 @@ import InkButton from '../components/ui/InkButton';
 import BottomNav from '../components/ui/BottomNav';
 import CompassWheel from '../components/compass/CompassWheel';
 import FengShuiRuler from '../components/instruments/FengShuiRuler';
-import { useAppStore, type BaziData } from '../store/useAppStore';
+import { useAppStore, type BaziData, type Room } from '../store/useAppStore';
 import type { Direction } from '../config/theme';
 
 type Step = 'upload' | 'annotate' | 'bazi';
+type HouseType = 'normal' | 'dorm';
+
+const NORMAL_ROOMS: Room[] = [
+  { id: '1', name: '客厅', label: '客厅' },
+  { id: '2', name: '主卧', label: '主卧' },
+  { id: '3', name: '厨房', label: '厨房' },
+  { id: '4', name: '卫生间', label: '卫生间' },
+];
+
+const DORM_ROOMS: Room[] = [
+  { id: '1', name: '床位', label: '床位' },
+  { id: '2', name: '书桌', label: '书桌' },
+  { id: '3', name: '储物', label: '储物' },
+  { id: '4', name: '卫生间', label: '卫生间' },
+];
 
 export default function UploadPage() {
   const navigate = useNavigate();
@@ -28,7 +43,13 @@ export default function UploadPage() {
     setBazi,
   } = useAppStore();
 
+  const [houseType, setHouseType] = useState<HouseType>('normal');
   const [baziForm, setBaziForm] = useState<BaziData>(bazi || { year: 1990, month: 1, day: 1, hour: 12 });
+
+  const handleHouseTypeChange = (type: HouseType) => {
+    setHouseType(type);
+    setRooms(type === 'normal' ? NORMAL_ROOMS : DORM_ROOMS);
+  };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -92,6 +113,31 @@ export default function UploadPage() {
               exit={{ opacity: 0, y: -8 }}
               className="flex flex-col items-center"
             >
+              {/* House type selector */}
+              <div className="w-full mb-6">
+                <p className="text-ink-light text-xs text-center mb-3">选择房屋类型</p>
+                <div className="flex justify-center gap-0 bg-silk rounded-full p-0.5 border border-ink-pale/20" style={{ boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.04)' }}>
+                  {(['normal', 'dorm'] as const).map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => handleHouseTypeChange(type)}
+                      className={`flex-1 max-w-32 py-2.5 px-4 rounded-full text-sm transition-all duration-200 ${
+                        houseType === type
+                          ? 'bg-cinnabar text-parchment font-bold shadow-[0_2px_8px_rgba(199,62,58,0.25)]'
+                          : 'text-ink-light hover:text-ink'
+                      }`}
+                    >
+                      {type === 'normal' ? '🏠 标准户型' : '🏢 宿舍户型'}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-ink-pale text-[10px] text-center mt-2 leading-relaxed">
+                  {houseType === 'normal'
+                    ? '适用于商品房、公寓、自建房等标准住宅'
+                    : '适用于学生宿舍、员工宿舍、合租单间等'}
+                </p>
+              </div>
+
               {/* Upload area with brush stroke border */}
               <div
                 className={`w-full aspect-[4/3] border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-4 cursor-pointer transition-colors duration-300 ${
@@ -225,7 +271,9 @@ export default function UploadPage() {
 
               {/* Room labels */}
               <div className="bg-silk p-4" style={{ borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02)' }}>
-                <p className="text-ink-light text-sm mb-3 text-center">确认各房间用途</p>
+                <p className="text-ink-light text-sm mb-3 text-center">
+                  {houseType === 'normal' ? '确认各房间用途' : '确认各区域用途'}
+                </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {rooms.map((room) => (
                     <div key={room.id} className="flex items-center gap-2">
