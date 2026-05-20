@@ -5,6 +5,7 @@ import InkBackground from '../components/ui/InkBackground';
 import BottomNav from '../components/ui/BottomNav';
 import IChingCoins from '../components/instruments/IChingCoins';
 import FiveElementsWheel from '../components/instruments/FiveElementsWheel';
+import MarkdownContent from '../components/ui/MarkdownContent';
 
 interface Message {
   id: string;
@@ -336,46 +337,7 @@ export default function BaziPage() {
                       }`}
                     >
                       {msg.role === 'assistant' ? (
-                        <div className="text-ink-heavy text-sm leading-relaxed">
-                          {msg.content.split('\n').map((line, i) => {
-                            const trimmed = line.trim();
-                            if (!trimmed) return <br key={i} />;
-                            if (trimmed.startsWith('**') && trimmed.endsWith('**')) {
-                              return (
-                                <h4
-                                  key={i}
-                                  className="text-ink font-bold mt-3 mb-1"
-                                  style={{
-                                    fontFamily: "'Noto Serif SC', serif",
-                                    fontWeight: 500,
-                                  }}
-                                >
-                                  {trimmed.replace(/\*\*/g, '')}
-                                </h4>
-                              );
-                            }
-                            if (trimmed.startsWith('- **')) {
-                              const clean = trimmed.replace(/^-\s*/, '');
-                              const match = clean.match(/^\*\*(.+?)\*\*[：:]?\s*(.*)/);
-                              if (match) {
-                                return (
-                                  <div key={i} className="flex gap-2 ml-1 mt-1">
-                                    <span className="text-cinnabar flex-shrink-0">•</span>
-                                    <span className="text-ink-heavy text-sm">
-                                      <strong>{match[1]}</strong>
-                                      {match[2] ? `：${match[2]}` : ''}
-                                    </span>
-                                  </div>
-                                );
-                              }
-                            }
-                            return (
-                              <p key={i} className="text-ink-heavy text-sm leading-relaxed mb-1">
-                                {trimmed}
-                              </p>
-                            );
-                          })}
-                        </div>
+                        <MarkdownContent content={msg.content} />
                       ) : (
                         <p className="text-ink text-sm leading-relaxed">{msg.content}</p>
                       )}
