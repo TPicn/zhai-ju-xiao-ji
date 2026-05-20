@@ -26,13 +26,16 @@ async function callDeepSeekAPI(
 
 用户提供的出生信息：${baziInfo}
 
+注意：用户的出生时间可能是口语化表达（如"上午9点""晚上8点半"）而非传统时辰（如"巳时""戌时"），请自行转换为对应的时辰再排盘。出生日期可能是农历（如"三月初五"）或公历（如"3月15日"），请根据语境判断并在分析中说明你使用的是哪种历法。
+
 分析原则：
-1. 基于八字理论框架（日主强弱、五行平衡、十神关系、大运走势、流年变化），但不堆砌术语——用生活化的语言解释
-2. 给出具体、可操作的建议，而非空洞的断言
-3. 保持温暖鼓励的语气，结合具体的命理依据
-4. 回答要有清晰的结构：先给出核心分析，再展开细节
-5. 在回答末尾，用"📜 本次分析要点汇总"作为标题，列出3-5条核心要点
-6. 最后用"🍃 最后想对你说"作为结尾，给用户一段温暖鼓励的话
+1. 首先明确告知用户你识别到的八字命盘（四柱天干地支），让用户确认基本信息
+2. 基于八字理论框架（日主强弱、五行平衡、十神关系、大运走势、流年变化），但不堆砌术语——用生活化的语言解释
+3. 给出具体、可操作的建议，而非空洞的断言
+4. 保持温暖鼓励的语气，结合具体的命理依据
+5. 回答要有清晰的结构：先给出核心分析，再展开细节
+6. 在回答末尾，用"📜 本次分析要点汇总"作为标题，列出3-5条核心要点
+7. 最后用"🍃 最后想对你说"作为结尾，给用户一段温暖鼓励的话
 
 重要：请只基于用户提供的出生信息进行分析。如果信息不足以做出判断，坦诚说明。
 
@@ -88,7 +91,7 @@ export default function BaziPage() {
   const handleStartChat = () => {
     if (!birthYear || !birthMonth || !birthDay || !birthHour) return;
 
-    const info = `乾造/坤造：${birthYear}年${birthMonth}月${birthDay}日${birthHour}时 · ${gender === '男' ? '乾造' : '坤造'}`;
+    const info = `出生：${birthYear}年${birthMonth}月${birthDay}日 ${birthHour} · ${gender === '男' ? '乾造' : '坤造'}`;
     setBaziInfo(info);
 
     const welcomeMsg: Message = {
@@ -206,7 +209,7 @@ export default function BaziPage() {
                   八字命理
                 </p>
                 <p className="text-ink-light text-sm text-center mb-6">
-                  请输入您的出生信息，系统将为您排出八字命盘
+                  请输入出生年月日和时间，农历或公历均可
                 </p>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -217,7 +220,7 @@ export default function BaziPage() {
                       value={birthYear}
                       onChange={(e) => setBirthYear(e.target.value)}
                       className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
-                      placeholder="如 1990"
+                      placeholder="如 1990 或 九零年"
                     />
                   </div>
                   <div>
@@ -227,7 +230,7 @@ export default function BaziPage() {
                       value={birthMonth}
                       onChange={(e) => setBirthMonth(e.target.value)}
                       className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
-                      placeholder="农历或公历月"
+                      placeholder="如 3月 或 三月初五"
                     />
                   </div>
                   <div>
@@ -237,17 +240,17 @@ export default function BaziPage() {
                       value={birthDay}
                       onChange={(e) => setBirthDay(e.target.value)}
                       className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
-                      placeholder="如 15"
+                      placeholder="如 15 或 初八"
                     />
                   </div>
                   <div>
-                    <label className="text-ink-light text-xs mb-1 block">出生时辰</label>
+                    <label className="text-ink-light text-xs mb-1 block">出生时间 <span className="text-ink-pale font-normal">(几点)</span></label>
                     <input
                       type="text"
                       value={birthHour}
                       onChange={(e) => setBirthHour(e.target.value)}
                       className="w-full bg-transparent border-0 border-b border-[#D9D1C5] px-0 py-2.5 text-sm text-ink-heavy focus:outline-none focus:border-b-2 focus:border-cinnabar transition-all placeholder:text-ink-pale" style={{ borderRadius: 0, transition: 'border-color 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0), border-width 0.25s cubic-bezier(0.2, 0.0, 0.0, 1.0)' }}
-                      placeholder="如 子时(23-1点)"
+                      placeholder="如 上午9点 或 晚上8点半"
                     />
                   </div>
                 </div>
