@@ -8,6 +8,8 @@ import ReportPage from './pages/ReportPage';
 import KnowledgePage from './pages/KnowledgePage';
 import KnowledgeDetailPage from './pages/KnowledgeDetailPage';
 import BaziPage from './pages/BaziPage';
+import LearningPage from './pages/LearningPage';
+import LearningDetailPage from './pages/LearningDetailPage';
 
 function RouteWrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -30,6 +32,8 @@ function AnimatedRoutes() {
         <Route path="/knowledge" element={<RouteWrapper><KnowledgePage /></RouteWrapper>} />
         <Route path="/knowledge/:id" element={<RouteWrapper><KnowledgeDetailPage /></RouteWrapper>} />
         <Route path="/bazi" element={<RouteWrapper><BaziPage /></RouteWrapper>} />
+        <Route path="/learning" element={<RouteWrapper><LearningPage /></RouteWrapper>} />
+        <Route path="/learning/:id" element={<RouteWrapper><LearningDetailPage /></RouteWrapper>} />
       </Routes>
     </AnimatePresence>
   );
