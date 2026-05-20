@@ -195,6 +195,23 @@ export default function LearningDetailPage() {
           ))}
         </motion.div>
 
+        {/* Extended content (if any) */}
+        {chapter.extendedContent && chapter.extendedContent.length > 0 && (
+          <>
+            <BrushDivider />
+            <motion.div
+              className="mt-4 space-y-1"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              {chapter.extendedContent.map((block, idx) => (
+                <BlockRenderer key={`ext-${idx}`} block={block} idx={idx} />
+              ))}
+            </motion.div>
+          </>
+        )}
+
         <BrushDivider />
 
         {/* Life application box */}
@@ -228,6 +245,83 @@ export default function LearningDetailPage() {
             {chapter.keyTakeaway}
           </p>
         </motion.div>
+
+        {/* Feynman Exercise */}
+        {chapter.feynmanExercise && (
+          <motion.div
+            className="mt-6 bg-[#F7F3ED] border border-ink-pale/20 p-4 sm:p-5"
+            style={{ borderRadius: '4px' }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm">🧠</span>
+              <span className="text-ink text-xs font-bold tracking-wider">费曼练习</span>
+              <span className="text-ink-pale text-[10px]">——以教为学，输出倒逼输入</span>
+            </div>
+            <p className="text-ink-light text-xs leading-relaxed mb-3">
+              核心概念：<span className="text-ink-heavy font-bold">{chapter.feynmanExercise.concept}</span>
+            </p>
+            <div className="space-y-3">
+              {chapter.feynmanExercise.steps.map((s) => (
+                <div key={s.step} className="bg-silk p-3 rounded">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="w-5 h-5 rounded-full bg-cinnabar/10 text-cinnabar text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                      {s.step}
+                    </span>
+                    <span className="text-ink text-xs font-bold">{s.title}</span>
+                  </div>
+                  <p className="text-ink-heavy text-xs leading-relaxed ml-7">{s.instruction}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Practical Task */}
+        {chapter.practicalTask && (
+          <motion.div
+            className="mt-4 bg-cinnabar/5 border border-cinnabar/20 p-4 sm:p-5"
+            style={{ borderRadius: '4px' }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm">✋</span>
+              <span className="text-cinnabar text-xs font-bold tracking-wider">实操任务</span>
+              <span className="text-ink-pale text-[10px]">——{chapter.practicalTask.time}</span>
+            </div>
+            <h4 className="text-ink text-sm font-bold mb-2">{chapter.practicalTask.title}</h4>
+            {chapter.practicalTask.materials.length > 0 && (
+              <div className="mb-3">
+                <span className="text-ink-pale text-[10px] block mb-1">所需材料：</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {chapter.practicalTask.materials.map((m, i) => (
+                    <span key={i} className="text-ink-heavy text-[10px] bg-silk px-2 py-0.5 rounded-full">
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="space-y-2">
+              {chapter.practicalTask.steps.map((s, i) => (
+                <div key={i} className="flex gap-2">
+                  <span className="w-4 h-4 rounded-full bg-cinnabar/20 text-cinnabar text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                    {i + 1}
+                  </span>
+                  <p className="text-ink-heavy text-xs leading-relaxed">{s}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 pt-3 border-t border-cinnabar/15">
+              <span className="text-ink-pale text-[10px] block mb-1">✅ 检验点：</span>
+              <p className="text-ink-heavy text-xs leading-relaxed italic">{chapter.practicalTask.checkIn}</p>
+            </div>
+          </motion.div>
+        )}
 
         {/* Prev / Next navigation */}
         <div className="flex justify-between mt-8">
