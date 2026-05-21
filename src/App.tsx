@@ -10,6 +10,9 @@ import KnowledgeDetailPage from './pages/KnowledgeDetailPage';
 import BaziPage from './pages/BaziPage';
 import LearningPage from './pages/LearningPage';
 import LearningDetailPage from './pages/LearningDetailPage';
+import DaoismPage from './pages/DaoismPage';
+import DaoismCategoryPage from './pages/DaoismCategoryPage';
+import DaoismDetailPage from './pages/DaoismDetailPage';
 
 function RouteWrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -34,6 +37,9 @@ function AnimatedRoutes() {
         <Route path="/bazi" element={<RouteWrapper><BaziPage /></RouteWrapper>} />
         <Route path="/learning" element={<RouteWrapper><LearningPage /></RouteWrapper>} />
         <Route path="/learning/:id" element={<RouteWrapper><LearningDetailPage /></RouteWrapper>} />
+        <Route path="/daojia" element={<RouteWrapper><DaoismPage /></RouteWrapper>} />
+        <Route path="/daojia/:category" element={<RouteWrapper><DaoismCategoryPage /></RouteWrapper>} />
+        <Route path="/daojia/:category/:id" element={<RouteWrapper><DaoismDetailPage /></RouteWrapper>} />
       </Routes>
     </AnimatePresence>
   );

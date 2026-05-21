@@ -7,6 +7,7 @@ const navItems = [
   { path: '/upload', label: '落墨' },
   { path: '/bazi', label: '命理' },
   { path: '/learning', label: '修学' },
+  { path: '/daojia', label: '道藏' },
 ];
 
 export default function BottomNav() {
