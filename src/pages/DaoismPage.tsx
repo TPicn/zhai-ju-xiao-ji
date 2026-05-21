@@ -11,6 +11,7 @@ const categoryColors: Record<string, string> = {
   schools: 'from-emerald-50 to-teal-50 border-emerald-200/30',
   deities: 'from-purple-50 to-violet-50 border-purple-200/30',
   philosophy: 'from-rose-50 to-pink-50 border-rose-200/30',
+  classics: 'from-stone-50 to-neutral-50 border-stone-200/30',
 };
 
 export default function DaoismPage() {
